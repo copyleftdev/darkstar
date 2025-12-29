@@ -1,0 +1,16 @@
+.{
+    .name = .darkstar,
+    .version = "0.0.0",
+    .fingerprint = 0x5cd559e77a0b87e5,
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+        .zig_bearssl = .{
+            .path = "libs/bearssl",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

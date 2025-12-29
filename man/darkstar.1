@@ -1,0 +1,49 @@
+.TH DARKSTAR 1 "2025-12-29" "0.1.0" "Darkstar Manual"
+.SH NAME
+darkstar \- backend-less internet health and flux monitoring tool
+.SH SYNOPSIS
+.B darkstar
+.I command
+[\fIarguments\fR]
+.SH DESCRIPTION
+.B darkstar
+is a terminal-based tool for analyzing internet routing stability and collecting outage signals directly from the client. By connecting to public telemetry streams (like RIPE RIS Live) and active measurement endpoints, it provides a real-time view of network health without requiring a centralized backend.
+.SH COMMANDS
+.TP
+.B health \fI<ASN | PREFIX>\fR
+Monitor the routing health of a specific Autonomous System (ASN) or IP prefix.
+.br
+Connects to global BGP collectors to track announcements and withdrawals in real-time.
+.br
+Example: \fBdarkstar health 3333\fR (Monitor RIPE NCC)
+.TP
+.B events
+Show the most recent 10 significant global routing events and internet outages.
+.TP
+.B probe ping \fI<TARGET>\fR
+Perform an active ICMP ping measurement to the target to verify reachability.
+.TP
+.B probe trace \fI<TARGET>\fR
+Perform a traceroute to the target to identify path issues and latency bottlenecks.
+.TP
+.B explain \fI<ASN>\fR
+Deep analysis of a specific ASN using aggregated signals and historical context to explain connectivity issues.
+.SH OPTIONS
+.TP
+.B --version
+Print the version number and exit.
+.SH INTERACTIVE CONTROLS
+When running the \fBhealth\fR dashboard:
+.TP
+.B q
+Quit the application.
+.SH EXIT STATUS
+.B 0
+Success.
+.TP
+.B 1
+Generic error.
+.SH AUTHORS
+Developed by the Darkstar Team.
+.SH SEE ALSO
+.BR zig (1)

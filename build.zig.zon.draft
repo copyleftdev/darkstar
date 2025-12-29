@@ -1,0 +1,18 @@
+.{
+    .name = "darkstar",
+    .version = "0.1.0",
+    .dependencies = .{
+        .bearssl = .{
+            .url = "https://github.com/ikskuh/zig-bearssl/archive/refs/tags/v0.0.1.tar.gz",
+            // Since we can't easily get the hash without running `zig fetch`, we loop.
+            // But we can try to guess or use a placeholder if `zig build` can autofix it?
+            // Actually, best practice: run `zig fetch --save` command.
+            // I will use run_command next to do this properly.
+            // But I needed to create this file first if it doesn't exist?
+            // `zig init` created one. I should view it first.
+        },
+    },
+    .paths = .{
+        "",
+    },
+}

@@ -6,7 +6,8 @@
 
 **Darkstar** is a terminal-based CLI tool that empowers network engineers to monitor internet routing stability (BGP) and outage signals directly from their local machine. By connecting directly to public telemetry streams (like RIPE RIS Live) via secure TLS, it provides a real-time "Pulse" of the internet without relying on proprietary SaaS backends.
 
-![Screenshot Placeholder](https://via.placeholder.com/800x400?text=Darkstar+TUI+Dashboard)
+[▶️ Watch Terminal Demo (demo.cast)](demo.cast)
+> *Note: To view the demo, use `asciinema play demo.cast`*
 
 ## 🚀 Features
 

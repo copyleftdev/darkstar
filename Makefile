@@ -30,12 +30,17 @@ clean:
 	rm -rf zig-out zig-cache .zig-cache
 	@echo "$(GREEN)✨ Sparkly clean!$(RESET)"
 
-## 🚀 install the binary to your path
+## 🚀 install the binary to your path (Global)
 install: build
 	@echo "$(BLUE)🚀 Installing to $(BINDIR)...$(RESET)"
 	@mkdir -p $(BINDIR)
 	install -m 755 zig-out/bin/$(PROJECT_NAME) $(BINDIR)/$(PROJECT_NAME)
 	@echo "$(GREEN)🎉 Installed! Run '$(PROJECT_NAME) health 3333' to test.$(RESET)"
+
+## 👤 install the binary to local user (~/.local/bin)
+install-local:
+	@$(MAKE) install PREFIX=$(HOME)/.local
+
 
 ## 🗑️  Uninstall the binary
 uninstall:

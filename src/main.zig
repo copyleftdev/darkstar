@@ -133,14 +133,14 @@ pub fn main() !void {
             try t.colorReset();
         },
         .Events => |info| {
-            std.debug.print("Showing last {} events\n", .{info.limit});
+            std.debug.print("Events limit={}: [Feature 'Global Events' is coming in v0.2.0]\n", .{info.limit});
         },
         .Probe => |info| {
-            std.debug.print("Probing {s} via {}\n", .{info.target, info.type});
+            std.debug.print("Probing {s}: [Feature 'Active Probing' is coming in v0.2.0]\n", .{info.target});
             allocator.free(info.target);
         },
         .Explain => |info| {
-            std.debug.print("Explaining status of: {s}\n", .{info.target});
+            std.debug.print("Explaining {s}: [Feature 'Explain' is coming in v0.2.0]\n", .{info.target});
             allocator.free(info.target);
         },
         .Version => {

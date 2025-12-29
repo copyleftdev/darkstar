@@ -37,9 +37,9 @@ install: build
 	install -m 755 zig-out/bin/$(PROJECT_NAME) $(BINDIR)/$(PROJECT_NAME)
 	@echo "$(GREEN)🎉 Installed! Run '$(PROJECT_NAME) health 3333' to test.$(RESET)"
 
-## 👤 install the binary to local user (~/bin)
+## 👤 install the binary to local user (~/.local/bin)
 install-local:
-	@$(MAKE) install BINDIR=$(HOME)/bin
+	@$(MAKE) install BINDIR=$(HOME)/.local/bin
 
 
 ## 🗑️  Uninstall the binary

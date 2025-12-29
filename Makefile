@@ -42,11 +42,15 @@ install-local:
 	@$(MAKE) install BINDIR=$(HOME)/.local/bin
 
 
-## 🗑️  Uninstall the binary
+## 🗑️  Uninstall the binary (Global)
 uninstall:
 	@echo "$(YELLOW)🗑️  Uninstalling from $(BINDIR)...$(RESET)"
 	rm -f $(BINDIR)/$(PROJECT_NAME)
 	@echo "$(GREEN)✌️  Uninstalled.$(RESET)"
+
+## 👤 Uninstall from local user (~/.local/bin)
+uninstall-local:
+	@$(MAKE) uninstall BINDIR=$(HOME)/.local/bin
 
 ## 🏃 Run the health check (dev mode)
 run:

@@ -1,7 +1,7 @@
 # Darkstar
 > **Backend-less Internet Health & Flux Monitoring**
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![License](https://img.shields.io/badge/license-DBAD-pink.svg)
 ![Zig](https://img.shields.io/badge/Zig-0.14.1-orange.svg)
 
 **Darkstar** is a terminal-based CLI tool that empowers network engineers to monitor internet routing stability (BGP) and outage signals directly from their local machine. By connecting directly to public telemetry streams (like RIPE RIS Live) via secure TLS, it provides a real-time "Pulse" of the internet without relying on proprietary SaaS backends.
@@ -70,4 +70,6 @@ We welcome contributions! Please check the `implementation_plan.md` (if availabl
 
 ## 📄 License
 
-MIT © Darkstar Team
+Released under the **"Don't Be A Dick" Public License**.
+1. Do whatever you want with the code.
+2. Don't be a dick.

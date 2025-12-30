@@ -5,6 +5,7 @@ const norm = @import("normalize/root.zig");
 const tui = @import("tui/root.zig");
 const probe = @import("probe/root.zig");
 const events = @import("events/root.zig");
+const explain = @import("explain/root.zig");
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -146,7 +147,7 @@ pub fn main() !void {
             allocator.free(info.target);
         },
         .Explain => |info| {
-            std.debug.print("Explaining {s}: [Feature 'Explain' is coming in v0.2.0]\n", .{info.target});
+            try explain.run(allocator, info.target);
             allocator.free(info.target);
         },
         .Version => {

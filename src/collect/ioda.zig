@@ -2,39 +2,48 @@ const std = @import("std");
 
 pub const IodaClient = struct {
     allocator: std.mem.Allocator,
-    client: std.http.Client,
-
     pub fn init(allocator: std.mem.Allocator) !IodaClient {
         return IodaClient{
             .allocator = allocator,
-            .client = std.http.Client{ .allocator = allocator },
         };
     }
 
     pub fn deinit(self: *IodaClient) void {
-        self.client.deinit();
+        _ = self;
     }
 
     pub fn fetchOutages(self: *IodaClient, asn: u32) !void {
-        var buf: [4096]u8 = undefined;
-        // IODA API V2
-        // Warning: This will likely fail without a TLS bundle in strict Zig build
-        // For prototype, we might need a workaround or just verify the struct structure.
         const url_fmt = "https://api.ioda.inetintel.cc.gatech.edu/v2/signals?entityType=asn&entityCode={d}";
         const url_str = try std.fmt.allocPrint(self.allocator, url_fmt, .{asn});
         defer self.allocator.free(url_str);
 
-        const uri = try std.Uri.parse(url_str);
+        const argv = &[_][]const u8{ "curl", "-s", url_str };
         
-        var server_header_buffer: [4096]u8 = undefined;
-        var req = try self.client.open(.GET, uri, .{ .server_header_buffer = &server_header_buffer });
-        defer req.deinit();
-
-        try req.send();
-        try req.wait();
+        var child = std.process.Child.init(argv, self.allocator);
+        child.stdout_behavior = .Pipe;
+        child.stderr_behavior = .Ignore;
         
-        const bytes = try req.read(&buf);
-        std.debug.print("IODA Response ({d} bytes): {s}\n", .{bytes, buf[0..bytes]});
+        try child.spawn();
+        
+        // Read output
+        const output = try child.stdout.?.readToEndAlloc(self.allocator, 1024 * 1024);
+        defer self.allocator.free(output);
+        
+        _ = try child.wait();
+        
+        // Simple heuristic: check if JSON contains "data"
+        if (std.mem.indexOf(u8, output, "\"data\":") != null) {
+            std.debug.print("IODA: Data retrieved for ASN {d}\n", .{asn});
+            // In a real implementation we would parse this JSON
+            // For now, just print a snippet
+            if (output.len > 200) {
+                 std.debug.print("Response: {s}...\n", .{output[0..200]});
+            } else {
+                 std.debug.print("Response: {s}\n", .{output});
+            }
+        } else {
+            std.debug.print("IODA: No data or API error for ASN {d}\n", .{asn});
+        }
     }
 };
 

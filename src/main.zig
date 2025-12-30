@@ -4,6 +4,7 @@ const ris = @import("collect/ris_live.zig");
 const norm = @import("normalize/root.zig");
 const tui = @import("tui/root.zig");
 const probe = @import("probe/root.zig");
+const events = @import("events/root.zig");
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -134,7 +135,7 @@ pub fn main() !void {
             try t.colorReset();
         },
         .Events => |info| {
-            std.debug.print("Events limit={}: [Feature 'Global Events' is coming in v0.2.0]\n", .{info.limit});
+            try events.run(allocator, info.limit);
         },
         .Probe => |info| {
             const pt = switch (info.type) {

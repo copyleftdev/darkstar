@@ -25,7 +25,7 @@ pub fn main() !void {
         .mask = std.posix.empty_sigset,
         .flags = 0,
     };
-    try std.posix.sigaction(std.posix.SIG.INT, &act, null);
+    std.posix.sigaction(std.posix.SIG.INT, &act, null);
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();

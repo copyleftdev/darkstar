@@ -3,6 +3,7 @@ const cli = @import("cli/root.zig");
 const ris = @import("collect/ris_live.zig");
 const norm = @import("normalize/root.zig");
 const tui = @import("tui/root.zig");
+const probe = @import("probe/root.zig");
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -136,7 +137,11 @@ pub fn main() !void {
             std.debug.print("Events limit={}: [Feature 'Global Events' is coming in v0.2.0]\n", .{info.limit});
         },
         .Probe => |info| {
-            std.debug.print("Probing {s}: [Feature 'Active Probing' is coming in v0.2.0]\n", .{info.target});
+            const pt = switch (info.type) {
+                .Ping => probe.ProbeType.Ping,
+                .Trace => probe.ProbeType.Trace,
+            };
+            try probe.run(allocator, info.target, pt);
             allocator.free(info.target);
         },
         .Explain => |info| {

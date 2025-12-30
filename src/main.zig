@@ -7,7 +7,25 @@ const probe = @import("probe/root.zig");
 const events = @import("events/root.zig");
 const explain = @import("explain/root.zig");
 
+var global_dash: ?*tui.Dashboard = null;
+
+fn handleSigInt(_: c_int) callconv(.C) void {
+    if (global_dash) |d| {
+        d.term.disableRawMode();
+        d.term.showCursor() catch {};
+    }
+    std.debug.print("\n[SIGINT] Exiting gracefully...\n", .{});
+    std.process.exit(0);
+}
+
 pub fn main() !void {
+    // Register SIGINT handler
+    const act = std.posix.Sigaction{
+        .handler = .{ .handler = handleSigInt },
+        .mask = std.posix.empty_sigset,
+        .flags = 0,
+    };
+    try std.posix.sigaction(std.posix.SIG.INT, &act, null);
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
@@ -32,6 +50,7 @@ pub fn main() !void {
 
             var dash = tui.Dashboard.init(allocator); // New allocator requirement
             defer dash.deinit();
+            global_dash = &dash;
 
             // 2. Connect & Subscribe
             try r.handshake();
@@ -121,6 +140,7 @@ pub fn main() !void {
             // We need to print this AFTER TUI finishes (which defer dash.finish handles?)
             // Actually defer runs at end of scope.
             // We want to stop TUI cleanly, then print result.
+            global_dash = null;
             try dash.finish();
             
             const health_score = agg.computeHealth(info.target);
